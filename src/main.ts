@@ -123,3 +123,15 @@ function startAtmosphere() {
 requestAnimationFrame(() => requestAnimationFrame(startAtmosphere))
 
 initializePreviews()
+
+// Move the oversized continuous field without changing the fixed player or logo.
+let scrollFrame = 0
+function updateBackgroundScroll() {
+  scrollFrame = 0
+  document.documentElement.style.setProperty('--background-scroll', `${-window.scrollY * 0.65}px`)
+}
+window.addEventListener('scroll', () => {
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateBackgroundScroll)
+}, { passive: true })
+window.addEventListener('pageshow', updateBackgroundScroll)
+updateBackgroundScroll()
