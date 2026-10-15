@@ -27,7 +27,7 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 /* Anchor the player at viewport centre. */
-:root { --player-width: min(480px, 69.4vw, 46.2svh); }
+:root { --player-width: min(528px, 76.3vw, 50.8svh); }
 @media (min-width: 761px) and (pointer: fine) {
   :root { --player-width: min(511px, 73.9vw, 49.2svh); }
 }
