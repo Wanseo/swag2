@@ -45,10 +45,9 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 }
 .player-cable {
   position: absolute;
-  width: 145%;
-  left: -3%;
-  top: -70%;
-  clip-path: inset(0 0 41% 0);
+  width: 160%;
+  left: 12%;
+  top: -55%;
   filter: drop-shadow(3px 5px 4px rgb(28 55 57 / 12%));
 }
 .stage-caption {
@@ -65,4 +64,10 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   .stage-caption { top: calc(50svh - var(--player-width) * .6 - 30px); }
   .stage-caption .tiny-label { display: none; }
   .stage-caption h1 { font-size: 14px; margin: 0; }
+}
+
+/* Keep the complete lower cable loop visible; only the viewport crops the scene. */
+body { overflow-x: clip; }
+@media (max-width: 760px) {
+  .player-cable { width: 125%; left: 0; top: -35%; }
 }

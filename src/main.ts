@@ -1,5 +1,5 @@
 import './style.css'
-import mintPlayer from './assets/mint-player.png'
+import pinkEarphones from './assets/pink-earphones.png'
 import bluePlayer from './assets/blue-player.png'
 
 const moods = {
@@ -20,7 +20,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <header><a class="wordmark" href="./" aria-label="moodroom 홈">moodroom<span>®</span></a><span class="edition">SOUND INTO COLOUR · VOL. 001</span><button id="motion" class="text-button" aria-pressed="false">움직임 멈추기 <span>Ⅱ</span></button></header>
     <section class="stage" aria-label="음악의 분위기를 담는 공간">
       <figure class="player-foreground">
-        <img class="player-cable" src="${mintPlayer}" alt="" aria-hidden="true" width="1024" height="1536" draggable="false" />
+        <img class="player-cable" src="${pinkEarphones}" alt="" aria-hidden="true" width="1024" height="1536" draggable="false" />
         <img class="player-body" src="${bluePlayer}" alt="반투명 하늘색 케이스와 청록색 화면의 빈티지 MP3 플레이어" fetchpriority="high" draggable="false" />
       </figure>
       <div class="stage-caption"><span class="tiny-label">A SPACE TO FEEL</span><h1>지금, 어떤 색의 기분인가요.</h1></div>
