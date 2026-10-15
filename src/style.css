@@ -68,6 +68,8 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 
 /* Keep the complete lower cable loop visible; only the viewport crops the scene. */
 body { overflow-x: clip; }
+/* Allow vertical scrolling while the logo and player stay fixed in the scene. */
+.experience { min-height: 160svh; }
 @media (max-width: 760px) {
   .player-cable { width: 125%; left: 0; top: -35%; }
 }
