@@ -2,7 +2,7 @@ export type BassRipple = { started: number; strength: number; seed: number }
 export const RIPPLE_DURATION = 4200
 
 export function rippleDuration(strength: number) {
-  return RIPPLE_DURATION - Math.max(0, Math.min(1, strength)) * 1900
+  return RIPPLE_DURATION - Math.max(0, Math.min(1, strength)) * 900
 }
 
 /** Cache the spatial harmonics instead of recalculating angles every frame. */
@@ -42,14 +42,14 @@ export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius
   return ripples.map(ripple => {
     const age = Math.max(0, Math.min(1, (now - ripple.started) / rippleDuration(ripple.strength)))
     const intensity = ripple.strength ** 1.3
-    const width = 0.035 + intensity * 0.15
-    // A kick launches quickly, then settles into an outward travelling wave.
-    const travel = 1 - (1 - age) ** (1.15 + ripple.strength * 0.65)
-    const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -0.45 : 0.45)
+    const width = 0.05 + intensity * 0.055
+    // A gentle launch preserves the beat without a sudden visual surge.
+    const travel = 1 - (1 - age) ** (1.1 + ripple.strength * 0.15)
+    const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -0.12 : 0.12)
     return {
       // Clear even the farthest corner, including the angular warp and ring width.
-      radius: travel * (maxRadius * 1.555 + width * 1.4 + 0.01),
-      strength: (0.1 + intensity * 3.6) * (1 - age * 0.5),
+      radius: travel * (maxRadius * 1.155 + width * 1.12 + 0.01),
+      strength: (0.06 + intensity * 0.85) * (1 - age * 0.5),
       width,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),
@@ -67,14 +67,14 @@ export function sampleRipples(index: number, geometry: ReturnType<typeof createR
     const stretch = geometry.sin2[index]! * front.cos4 - geometry.cos2[index]! * front.sin4
     const fold = geometry.sin3[index]! * front.cos + geometry.cos3[index]! * front.sin
     const flutter = geometry.sin5[index]! * front.cos2 - geometry.cos5[index]! * front.sin2
-    // Uneven directional travel breaks the ring into broad, asymmetric surges.
-    const warpedRadius = radius * (1 + lean * 0.22 + stretch * 0.14 + fold * 0.13 + flutter * 0.065)
+    // Subtle asymmetry keeps the contour organic without deep folds.
+    const warpedRadius = radius * (1 + lean * 0.08 + stretch * 0.045 + fold * 0.022 + flutter * 0.008)
     const edge = warpedRadius - front.radius
-    const width = front.width * (1 + stretch * 0.25 + flutter * 0.15)
+    const width = front.width * (1 + stretch * 0.09 + flutter * 0.03)
     if (Math.abs(edge) < width) {
       const envelope = Math.cos(edge / width * Math.PI / 2) ** 2
-      const surge = 0.95 + lean * 0.4 + fold * 0.25
-      shift += Math.sin(edge / width * Math.PI * 2) * envelope * front.strength * surge
+      const surge = 0.9 + lean * 0.1 + fold * 0.05
+      shift += Math.sin(edge / width * Math.PI) * envelope * front.strength * surge
     }
   }
   return shift

@@ -90,7 +90,7 @@ function startAtmosphere() {
         const centerLight = horizontalLight[x]! * verticalLight
         const light = Math.max(centerLight, topLight)
         // Give each travelling crest a light/dark edge across every palette.
-        const rippleContrast = Math.tanh(rippleShift) * 0.16
+        const rippleContrast = Math.tanh(rippleShift) * 0.07
         const offset = (y * canvas.width + x) * 4
         for (let c = 0; c < 3; c++) {
           const value = colors[index]![c]! * (1 - blend) + colors[Math.min(index + 1, 3)]![c]! * blend
