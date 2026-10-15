@@ -84,6 +84,18 @@ body { overflow-x: clip; }
   flex-shrink: 0;
 }
 .brand-symbol { display: block; width: 124px; height: 56px; object-fit: contain; }
+.wordmark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .28;
+  mix-blend-mode: soft-light;
+  background: url('./assets/fine-grain-inline.png?inline') repeat;
+  background-size: 56px 56px;
+  mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
+  -webkit-mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
+}
 @media (max-width: 760px) {
   .wordmark { top: 24px; left: 24px; }
   .brand-symbol { width: 104px; height: 47px; }
