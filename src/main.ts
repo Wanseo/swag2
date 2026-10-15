@@ -15,17 +15,9 @@ export function setMood(next: Mood) {
 
 }
 
-const motionButton = document.querySelector<HTMLButtonElement>('#motion')!
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-function updateMotion() {
-  motionButton.setAttribute('aria-pressed', String(paused))
-  motionButton.setAttribute('aria-label', paused ? '움직임 재생' : '움직임 멈추기')
-  motionButton.innerHTML = paused ? '<span aria-hidden="true">▷</span>' : '<span aria-hidden="true">Ⅱ</span>'
-}
 paused = reducedMotion.matches
-updateMotion()
-motionButton.addEventListener('click', () => { paused = !paused; updateMotion() })
-reducedMotion.addEventListener('change', event => { paused = event.matches; updateMotion() })
+reducedMotion.addEventListener('change', event => { paused = event.matches })
 
 function startAtmosphere() {
   // Layered domain warping makes colour boundaries stretch and curl like liquid.
