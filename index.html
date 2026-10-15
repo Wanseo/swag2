@@ -23,6 +23,13 @@
           <img id="album-art" alt="Justin Bieber — SWAG II 앨범 표지" width="600" height="600" decoding="async" />
           <div class="track-display"><span id="track-title"></span><span id="track-position"></span></div>
         </div>
+        <div class="track-menu" id="track-menu" hidden>
+          <div class="track-menu-header"><span>SWAG II</span><span id="menu-position">01 / 23</span></div>
+          <div id="track-list" role="listbox" aria-label="SWAG II 곡 선택" tabindex="0"></div>
+        </div>
+        <button class="player-hit menu" id="open-track-menu" aria-label="SWAG II 곡 목록" aria-expanded="false" aria-controls="track-menu"></button>
+        <button class="player-hit up" id="menu-up" aria-label="목록에서 이전 곡 선택" disabled></button>
+        <button class="player-hit down" id="menu-down" aria-label="목록에서 다음 곡 선택" disabled></button>
         <button class="player-hit replay" id="replay-preview" aria-label="현재 곡 미리듣기 처음부터 다시 듣기"></button>
         <button class="player-hit previous" id="previous-track" aria-label="SWAG II 이전 곡 보기"></button>
         <button class="player-hit toggle" id="toggle-preview" aria-label="SWAG II 미리듣기 재생" aria-pressed="false"></button>
