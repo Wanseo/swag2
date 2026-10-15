@@ -15,7 +15,7 @@ export function activateAudioPulse(audio: HTMLAudioElement) {
     try {
       context = new AudioContext()
       const nextAnalyser = context.createAnalyser()
-      nextAnalyser.fftSize = 2048
+      nextAnalyser.fftSize = 4096
       nextAnalyser.smoothingTimeConstant = 0.25
       source = context.createMediaElementSource(audio)
       source.connect(nextAnalyser)
@@ -43,12 +43,23 @@ export function readAudioPulse(now: number) {
   }
   analyser.getByteFrequencyData(bins)
   const binHz = context.sampleRate / analyser.fftSize
-  // Only bass-band bins drive visuals; playback itself remains unfiltered.
-  const start = Math.max(1, Math.ceil(40 / binHz))
-  const end = Math.min(bins.length - 1, Math.floor(160 / binHz))
-  let bass = 0
-  for (let i = start; i <= end; i++) bass += bins[i]! / 255
-  bass /= end - start + 1
+  // Focus on sub-bass/kick fundamentals, excluding most low vocal fundamentals.
+  // Compare against vocal-range harmonics to suppress voice-led passages.
+  // This is spectral gating, not full vocal/instrument source separation.
+  function bandLevel(low: number, high: number) {
+    const start = Math.max(1, Math.ceil(low / binHz))
+    const end = Math.min(bins!.length - 1, Math.floor(high / binHz))
+    let level = 0
+    for (let i = start; i <= end; i++) level += (bins![i]! / 255) ** 2
+    return Math.sqrt(level / (end - start + 1))
+  }
+  const sub = bandLevel(35, 70)
+  const lowBass = bandLevel(70, 95)
+  const vocalBand = bandLevel(180, 1200)
+  const rawBass = sub * 0.8 + lowBass * 0.2
+  const dominance = rawBass / (vocalBand + 0.08)
+  const gate = Math.max(0, Math.min(1, (dominance - 0.9) / 0.8))
+  const bass = rawBass * gate
   energy += (bass - energy) * (bass > energy ? 0.5 : 0.1)
   const onset = bass - previousBass
   const beat = bass > 0.12 && now - lastBeat > 210 && onset > 0.025 && bass > baseline + 0.035
