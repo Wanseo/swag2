@@ -72,11 +72,11 @@ export function readAudioPulse(now: number) {
   const relativeLevel = Math.min(1, bass / bassPeak)
   const attack = Math.min(1, Math.max(0, bass - baseline) / Math.max(0.08, bassPeak * 0.65))
   // Include lighter bass hits while leaving room between gentle waves.
-  const accent = bass > 0.085
-    && relativeLevel > 0.5
-    && attack > 0.35
-    && onset > Math.max(0.018, bassPeak * 0.05)
-    && bass > baseline * 1.2 + 0.015
+  const accent = bass > 0.06
+    && relativeLevel > 0.38
+    && attack > 0.27
+    && onset > Math.max(0.013, bassPeak * 0.038)
+    && bass > baseline * 1.15 + 0.011
   const beat = accent && now - lastBeat > 650
     ? Math.max(0.06, Math.min(1, relativeLevel ** 1.8 * (0.35 + attack * 0.65))) : 0
   if (beat) lastBeat = now
