@@ -101,7 +101,7 @@ function draw(now: number) {
   if (now - last < 1000 / 30 || document.hidden) return
   const delta = Math.min((now - last) / 1000, 0.1)
   last = now
-  if (!paused) time += delta * moods[mood].speed * 3
+  if (!paused) time += delta * moods[mood].speed * 2.25
   const target = moods[mood].colors.map(rgb)
   colors = colors.map((color, i) => color.map((channel, j) => channel + (target[i]![j]! - channel) * 0.065))
   for (let y = 0; y < canvas.height; y++) {
