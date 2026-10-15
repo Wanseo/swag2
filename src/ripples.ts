@@ -28,9 +28,9 @@ export function createRippleFronts(ripples: BassRipple[], now: number) {
     const age = Math.max(0, Math.min(1, (now - ripple.started) / 2400))
     const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -1.4 : 1.4)
     return {
-      radius: age * (1.05 + ripple.strength * 0.35),
-      strength: ripple.strength * (0.6 + ripple.strength * ripple.strength * 1.15) * (1 - age) ** 1.3,
-      width: 0.11 + ripple.strength * 0.065,
+      radius: age * (0.4 + ripple.strength * 1.15),
+      strength: ripple.strength * (0.45 + ripple.strength * ripple.strength * 1.3) * (1 - age) ** 1.3,
+      width: 0.055 + ripple.strength * 0.12,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),
     }
