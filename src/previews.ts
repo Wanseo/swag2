@@ -74,6 +74,14 @@ export function initializePreviews() {
       void play()
     }
   })
+  document.querySelector('#replay-preview')!.addEventListener('click', () => {
+    if (selected < 0) { select(0, true); return }
+    version++
+    pending = false
+    audio.pause()
+    audio.currentTime = 0
+    void play()
+  })
   document.querySelector('#next-track')!.addEventListener('click', () => select(selected < 0 ? 0 : selected + 1, !audio.paused || pending))
   document.querySelector('#previous-track')!.addEventListener('click', () => select(selected < 0 ? album.tracks.length - 1 : selected - 1, !audio.paused || pending))
   audio.addEventListener('playing', () => {
