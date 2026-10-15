@@ -67,7 +67,9 @@ function startAtmosphere() {
     const target = palettes[mood]!
     const transitioning = colors.some((color, i) => color.some((channel, j) => Math.abs(channel - target[i]![j]!) > 0.1))
     if (paused && lastDrawnMood === mood && !transitioning) return
-    colors = colors.map((color, i) => color.map((channel, j) => channel + (target[i]![j]! - channel) * 0.065))
+    // Ease into the next track's palette over several seconds, independent of FPS.
+    const colorBlend = 1 - Math.exp(-delta / 1.8)
+    colors = colors.map((color, i) => color.map((channel, j) => channel + (target[i]![j]! - channel) * colorBlend))
     const lightX = 0.5 + Math.sin(time * 0.45) * 0.06
     const lightY = 0.4 + Math.cos(time * 0.4) * 0.05
     for (let x = 0; x < canvas.width; x++) {
