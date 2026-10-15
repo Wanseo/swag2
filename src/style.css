@@ -9,10 +9,10 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: .72;
+  opacity: .28;
   mix-blend-mode: soft-light;
   background: url('./assets/film-grain.png') repeat;
-  background-size: 384px 384px;
+  background-size: 240px 240px;
 }
 
 .experience{position:relative;z-index:1;min-height:100svh;padding:32px 48px 30px;display:flex;flex-direction:column}header{display:flex;align-items:center;justify-content:space-between;gap:20px}.wordmark{font-size:28px;font-weight:600;letter-spacing:-1.6px}.wordmark span{font-size:12px;vertical-align:top;display:inline-block;margin:4px 0 0 3px;letter-spacing:0}.edition,.tiny-label{font-size:10px;letter-spacing:2px;font-weight:500}.edition{opacity:.65;margin-left:50px}.text-button{background:transparent;font-size:11px;display:flex;gap:18px;align-items:center}.text-button span{font-size:17px}
@@ -21,3 +21,33 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 @media(min-height:950px){.stage{min-height:740px}.portrait{margin:45px 0 30px;transform:scale(1.15)}}
 @media(max-width:760px){.experience{padding:24px}.edition{display:none}.wordmark{font-size:25px}.stage{min-height:560px;padding:50px 0 35px}h1{font-size:17px}.portrait{height:285px;margin-top:20px}footer{grid-template-columns:1fr 1fr;gap:28px 16px;padding-top:24px}.palette-control{text-align:right}.mood-options{gap:15px;justify-content:flex-end}.palette-control>.tiny-label{font-size:7px;letter-spacing:1px}.mood-info .tiny-label{font-size:8px;letter-spacing:1px}h2{font-size:29px}.mood-info p{max-width:145px;line-height:1.7}.connection{grid-column:1/-1;justify-self:center;margin:5px 0 0}.swatch{width:26px;height:26px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* The photographic foreground stays unblurred so plastic and cable texture survive.
+   Keep the cable in its own figure for a future tracked-ear attachment layer. */
+.player-foreground {
+  position: absolute;
+  left: clamp(-42px, -3vw, -12px);
+  bottom: 0;
+  width: clamp(240px, 30vw, 430px);
+  margin: 0;
+  z-index: 2;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  transform-origin: 30% 85%;
+}
+.player-foreground img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(9px 19px 13px rgb(28 55 57 / 14%));
+  user-select: none;
+}
+@media (max-width: 1000px) {
+  .player-foreground { width: 250px; left: -48px; bottom: 3px; }
+}
+@media (max-width: 760px) {
+  .player-foreground { width: 165px; left: -42px; bottom: 28px; transform: rotate(-12deg); }
+}
+@media (max-width: 390px) {
+  .player-foreground { width: 140px; left: -38px; bottom: 32px; }
+}
