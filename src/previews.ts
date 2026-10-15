@@ -1,7 +1,7 @@
 import album from './swag-ii.json'
 import { activateAudioPulse } from './audio-pulse'
 
-export function initializePreviews() {
+export function initializePreviews(onTrackSelected?: (title: string) => void) {
   const audio = new Audio()
   audio.crossOrigin = 'anonymous'
   audio.preload = 'none'
@@ -111,6 +111,7 @@ export function initializePreviews() {
     audio.pause()
     selected = (index + album.tracks.length) % album.tracks.length
     const track = album.tracks[selected]!
+    onTrackSelected?.(track.title)
     audio.src = track.preview
     if (!artwork.hasAttribute('src')) artwork.src = album.artwork
     title.textContent = track.title

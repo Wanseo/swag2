@@ -1,21 +1,13 @@
 import { initializePreviews } from './previews'
 import { readAudioPulse } from './audio-pulse'
+import { moods, trackAtmospheres, type Mood } from './atmospheres'
 
-const moods = {
-  daydream: { label: 'Daydream', note: '몽환적인 오후, 느리게 번지는 색', colors: ['#e7e5d7', '#81b5c0', '#e7a4a8', '#326f7c'], speed: 0.13 },
-  warmth: { label: 'Warmth', note: '따뜻한 리듬, 햇빛에 물든 공기', colors: ['#eee5cf', '#e9b77d', '#d88770', '#96b3b4'], speed: 0.18 },
-  drift: { label: 'Drift', note: '차분한 호흡, 깊고 푸른 잔향', colors: ['#dde6d8', '#86a99a', '#6ca8be', '#194c58'], speed: 0.1 },
-  afterglow: { label: 'Afterglow', note: '밤의 여운, 부드럽게 남는 온기', colors: ['#ddd4df', '#ac9dc4', '#e7a2ab', '#676b94'], speed: 0.16 },
-} as const
-
-type Mood = keyof typeof moods
 let mood: Mood = 'daydream'
 let paused = false
 
-/** Future Spotify integration can select a mood through this single entry point. */
+/** Track changes select a curated reference-inspired palette. */
 export function setMood(next: Mood) {
   mood = next
-
 }
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -122,7 +114,7 @@ function startAtmosphere() {
 
 requestAnimationFrame(() => requestAnimationFrame(startAtmosphere))
 
-initializePreviews()
+initializePreviews(title => setMood(trackAtmospheres[title] ?? 'daydream'))
 
 // Move the oversized continuous field without changing the fixed player or logo.
 let scrollFrame = 0
