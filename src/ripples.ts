@@ -1,4 +1,5 @@
 export type BassRipple = { started: number; strength: number; seed: number }
+export const RIPPLE_DURATION = 4200
 
 /** Cache the spatial harmonics instead of recalculating angles every frame. */
 export function createRippleGeometry(width: number, height: number, aspect: number, centerX: number, centerY: number) {
@@ -7,6 +8,7 @@ export function createRippleGeometry(width: number, height: number, aspect: numb
   const cos3 = new Float32Array(radius.length)
   const sin5 = new Float32Array(radius.length)
   const cos5 = new Float32Array(radius.length)
+  let maxRadius = 0
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const dx = (x / width - centerX) * aspect
@@ -14,23 +16,25 @@ export function createRippleGeometry(width: number, height: number, aspect: numb
       const angle = Math.atan2(dy, dx)
       const i = y * width + x
       radius[i] = Math.hypot(dx, dy)
+      maxRadius = Math.max(maxRadius, radius[i]!)
       sin3[i] = Math.sin(angle * 3)
       cos3[i] = Math.cos(angle * 3)
       sin5[i] = Math.sin(angle * 5)
       cos5[i] = Math.cos(angle * 5)
     }
   }
-  return { radius, sin3, cos3, sin5, cos5 }
+  return { radius, sin3, cos3, sin5, cos5, maxRadius }
 }
 
-export function createRippleFronts(ripples: BassRipple[], now: number) {
+export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius: number) {
   return ripples.map(ripple => {
-    const age = Math.max(0, Math.min(1, (now - ripple.started) / 2400))
+    const age = Math.max(0, Math.min(1, (now - ripple.started) / RIPPLE_DURATION))
     const intensity = Math.sqrt(ripple.strength)
     const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -1.4 : 1.4)
     return {
-      radius: age * (0.4 + ripple.strength * 1.15),
-      strength: intensity * (1.1 + ripple.strength * 1.6) * (1 - age) ** 1.1,
+      // Clear even the farthest corner, including the angular warp and ring width.
+      radius: age * (maxRadius * 1.145 + 0.15),
+      strength: intensity * (1.1 + ripple.strength * 1.6) * (1 - age * 0.45),
       width: 0.065 + intensity * 0.075,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),

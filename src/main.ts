@@ -1,7 +1,7 @@
 import { initializePerspective } from './perspective'
 import { initializePreviews } from './previews'
 import { readAudioPulse } from './audio-pulse'
-import { createRippleGeometry, createRippleFronts, sampleRipples, type BassRipple } from './ripples'
+import { createRippleGeometry, createRippleFronts, sampleRipples, RIPPLE_DURATION, type BassRipple } from './ripples'
 import { moods, trackAtmospheres, type Mood } from './atmospheres'
 
 let mood: Mood = 'daydream'
@@ -50,12 +50,11 @@ function startAtmosphere() {
     last = now
     const pulse = paused ? { energy: 0, beat: 0 } : readAudioPulse(now)
     if (paused) ripples = []
-    ripples = ripples.filter(ripple => now - ripple.started < 2400)
+    ripples = ripples.filter(ripple => now - ripple.started < RIPPLE_DURATION)
     if (pulse.beat) {
       ripples.push({ started: now, strength: pulse.beat, seed: ++beatNumber })
-      if (ripples.length > 3) ripples.shift()
     }
-    const fronts = createRippleFronts(ripples, now)
+    const fronts = createRippleFronts(ripples, now, geometry.maxRadius)
     if (!paused) time += delta * moods[mood].speed * 2.25
     const target = palettes[mood]!
     const transitioning = colors.some((color, i) => color.some((channel, j) => Math.abs(channel - target[i]![j]!) > 0.1))
