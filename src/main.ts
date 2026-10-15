@@ -12,7 +12,6 @@ const moods = {
 type Mood = keyof typeof moods
 let mood: Mood = 'daydream'
 let paused = false
-let stream: MediaStream | undefined
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <canvas id="atmosphere" aria-hidden="true"></canvas>
@@ -23,11 +22,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <figure class="player-foreground">
         <img class="player-cable" src="${mintPlayer}" alt="" aria-hidden="true" width="1024" height="1536" draggable="false" />
         <img class="player-body" src="${bluePlayer}" alt="반투명 하늘색 케이스와 청록색 화면의 빈티지 MP3 플레이어" fetchpriority="high" draggable="false" />
-        <video id="camera" autoplay playsinline muted hidden></video>
       </figure>
       <div class="stage-caption"><span class="tiny-label">A SPACE TO FEEL</span><h1>지금, 어떤 색의 기분인가요.</h1></div>
-      <div class="portrait" id="portrait" aria-hidden="true"></div>
-      <div class="camera-controls"><button id="camera-toggle" class="camera-button"><span class="camera-icon" aria-hidden="true">＋</span> 카메라 켜기</button><p id="camera-status" role="status">당신의 모습을 이 공간에 담아보세요</p></div>
     </section>
     <footer><div class="mood-info"><span class="tiny-label"><i></i> COLOUR STUDY / <span id="mood-number">01</span></span><h2 id="mood-title">Daydream</h2><p id="mood-note">${moods.daydream.note}</p></div><div class="palette-control"><span class="tiny-label">CHOOSE YOUR ATMOSPHERE</span><div class="mood-options" role="group" aria-label="분위기 선택">${Object.entries(moods).map(([key, value], i) => `<button class="mood-button" data-mood="${key}" aria-pressed="${i === 0}" aria-label="${value.label}"><span class="swatch" style="background:linear-gradient(135deg, ${value.colors[1]}, ${value.colors[2]}, ${value.colors[3]})"></span><span>${value.label}</span></button>`).join('')}</div></div><div class="connection"><span class="connection-icon">≋</span><span>음악이 색이 되는 순간<small>Spotify 연결 예정 · 지금은 분위기 미리보기</small></span></div></footer>
   </main>`
@@ -52,38 +48,6 @@ paused = reducedMotion.matches
 updateMotion()
 motionButton.addEventListener('click', () => { paused = !paused; updateMotion() })
 reducedMotion.addEventListener('change', event => { paused = event.matches; updateMotion() })
-
-const cameraButton = document.querySelector<HTMLButtonElement>('#camera-toggle')!
-const video = document.querySelector<HTMLVideoElement>('#camera')!
-const cameraStatus = document.querySelector('#camera-status')!
-function stopCamera() {
-  stream?.getTracks().forEach(track => track.stop())
-  stream = undefined
-  video.srcObject = null
-  video.hidden = true
-  document.querySelector('#portrait')!.classList.remove('camera-active')
-  cameraButton.innerHTML = '<span class="camera-icon" aria-hidden="true">＋</span> 카메라 켜기'
-  cameraStatus.textContent = '당신의 모습을 이 공간에 담아보세요'
-}
-cameraButton.addEventListener('click', async () => {
-  if (stream) { stopCamera(); return }
-  cameraButton.disabled = true
-  cameraStatus.textContent = '카메라 연결을 기다리고 있어요'
-  try {
-    if (!navigator.mediaDevices?.getUserMedia) throw new Error('unsupported')
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 } }, audio: false })
-    video.srcObject = stream
-    video.hidden = false
-    await video.play()
-    document.querySelector('#portrait')!.classList.add('camera-active')
-    cameraButton.textContent = '카메라 끄기'
-    cameraStatus.textContent = '카메라 미리보기 · 영상은 서버로 전송되지 않아요'
-  } catch (error) {
-    stopCamera()
-    cameraStatus.textContent = error instanceof DOMException && error.name === 'NotAllowedError' ? '카메라 권한을 허용한 뒤 다시 눌러주세요' : '카메라를 연결할 수 없어요. 장치와 HTTPS 연결을 확인해주세요'
-  } finally { cameraButton.disabled = false }
-})
-window.addEventListener('pagehide', stopCamera)
 
 // Layered domain warping makes colour boundaries stretch and curl like liquid.
 // The small render surface is softened by CSS; the grain stays on a separate layer.
