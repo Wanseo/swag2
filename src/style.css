@@ -45,11 +45,15 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 .player-cable {
   position: absolute;
   z-index: 0;
-  width: 120%;
-  left: -5%;
-  top: -32%;
+  width: 105%;
+  left: 50%;
+  top: 97%;
+  /* Anchor the metal tip to the bottom centre, then turn the plug upward. */
+  transform-origin: 24.5% 74.5%;
+  transform: translate(-24.5%, -74.5%) rotate(160deg);
   pointer-events: none;
-  filter: drop-shadow(3px 5px 4px rgb(28 55 57 / 12%));
+  opacity: .85;
+  filter: blur(1.2px) saturate(.9) drop-shadow(3px 5px 4px rgb(28 55 57 / 12%));
 }
 .player-cable img { width: 100%; }
 .player-cable::after {
@@ -83,9 +87,6 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 body { overflow-x: clip; }
 /* Allow vertical scrolling while the logo and player stay fixed in the scene. */
 .experience { min-height: 160svh; }
-@media (max-width: 760px) {
-  .player-cable { width: 115%; left: -10%; top: -24%; }
-}
 
 .wordmark {
   position: fixed;
