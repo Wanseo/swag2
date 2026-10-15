@@ -12,13 +12,9 @@ let paused = false
 /** Future Spotify integration can select a mood through this single entry point. */
 export function setMood(next: Mood) {
   mood = next
-  document.querySelector('#mood-title')!.textContent = moods[next].label
-  document.querySelector('#mood-note')!.textContent = moods[next].note
-  document.querySelector('#mood-number')!.textContent = String(Object.keys(moods).indexOf(next) + 1).padStart(2, '0')
-  document.querySelectorAll<HTMLButtonElement>('[data-mood]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mood === next)))
+
 }
 
-document.querySelectorAll<HTMLButtonElement>('[data-mood]').forEach(button => button.addEventListener('click', () => setMood(button.dataset.mood as Mood)))
 const motionButton = document.querySelector<HTMLButtonElement>('#motion')!
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 function updateMotion() {
