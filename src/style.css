@@ -22,7 +22,7 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 /* Anchor the player at viewport centre. */
-:root { --player-width: min(493px, 71.4vw, 47.6svh); }
+:root { --player-width: min(444px, 64.3vw, 42.8svh); }
 /* Give the enlarged centrepiece a full first screen. */
 .stage { min-height: max(620px, calc(100svh - 64px)); }
 .player-foreground {
