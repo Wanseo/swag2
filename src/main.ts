@@ -56,7 +56,7 @@ function startAtmosphere() {
     }
     const fronts = createRippleFronts(ripples, now, geometry.maxRadius)
     // Let the colour field flow gently while accents move independently.
-    if (!paused) time += delta * moods[mood].speed * 0.24
+    if (!paused) time += delta * moods[mood].speed * 1.6
     const target = palettes[mood]!
     const transitioning = colors.some((color, i) => color.some((channel, j) => Math.abs(channel - target[i]![j]!) > 0.1))
     if (paused && lastDrawnMood === mood && !transitioning) return
