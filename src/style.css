@@ -69,7 +69,7 @@ body { overflow-x: clip; }
 
 .wordmark {
   position: fixed;
-  top: 44px;
+  top: 56px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -91,7 +91,7 @@ body { overflow-x: clip; }
   -webkit-mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
 }
 @media (max-width: 760px) {
-  .wordmark { top: 36px; }
+  .wordmark { top: 48px; }
   .brand-symbol { width: 104px; height: 47px; }
 }
 
