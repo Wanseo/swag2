@@ -138,10 +138,10 @@ body { overflow-x: clip; }
 #track-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #track-position { opacity: .7; }
 .preview-info { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); width: min(340px, 85vw); text-align: center; pointer-events: auto; }
-.preview-info p { margin: 0 0 8px; font-size: 10px; line-height: 1.5; }
+.preview-info p { margin: 0 0 5px; font-size: 8px; line-height: 1.5; }
 .preview-info a { display: inline-block; }
-.preview-info a img { width: 88px; height: auto; }
-.preview-info small { display: block; margin-top: 4px; font-size: 8px; opacity: .7; }
+.preview-info a img { width: 70px; height: auto; }
+.preview-info small { display: block; margin-top: 3px; font-size: 7px; opacity: .7; }
 .album-screen[hidden], .preview-info[hidden] { display: none; }
 
 /* Keep the player in place while a continuous background shifts underneath. */
