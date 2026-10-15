@@ -190,3 +190,29 @@ body { overflow-x: clip; }
   background: #000;
   box-shadow: 0 0 0 1px #000;
 }
+
+/* Animate separate layers so levitation and button-press transforms can coexist. */
+.player-levitation {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  animation: player-levitate 7s ease-in-out infinite;
+}
+.player-body { filter: drop-shadow(8px 24px 22px rgb(28 55 57 / 18%)); }
+.brand-symbol {
+  animation: logo-levitate 6s ease-in-out infinite;
+  filter: drop-shadow(0 8px 7px rgb(35 86 112 / 14%));
+}
+.wordmark::after { animation: logo-levitate 6s ease-in-out infinite; }
+@keyframes player-levitate {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(5px); }
+}
+@keyframes logo-levitate {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .player-levitation, .brand-symbol, .wordmark::after { animation: none; }
+}
