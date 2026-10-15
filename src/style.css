@@ -191,28 +191,20 @@ body { overflow-x: clip; }
   box-shadow: 0 0 0 1px #000;
 }
 
-/* Animate separate layers so levitation and button-press transforms can coexist. */
+/* Stationary objects with soft, layered shadows for a lifted appearance. */
 .player-levitation {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 2;
-  animation: player-levitate 7s ease-in-out infinite;
 }
-.player-body { filter: drop-shadow(8px 24px 22px rgb(28 55 57 / 18%)); }
+.player-body {
+  filter:
+    drop-shadow(3px 9px 7px rgb(28 55 57 / 12%))
+    drop-shadow(12px 35px 26px rgb(28 55 57 / 24%));
+}
 .brand-symbol {
-  animation: logo-levitate 6s ease-in-out infinite;
-  filter: drop-shadow(0 8px 7px rgb(35 86 112 / 14%));
-}
-.wordmark::after { animation: logo-levitate 6s ease-in-out infinite; }
-@keyframes player-levitate {
-  0%, 100% { transform: translateY(-4px); }
-  50% { transform: translateY(5px); }
-}
-@keyframes logo-levitate {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .player-levitation, .brand-symbol, .wordmark::after { animation: none; }
+  filter:
+    drop-shadow(0 3px 3px rgb(35 86 112 / 12%))
+    drop-shadow(3px 12px 8px rgb(35 86 112 / 23%));
 }
