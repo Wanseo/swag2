@@ -65,7 +65,8 @@ body { overflow-x: clip; }
 .wordmark {
   position: fixed;
   top: 32px;
-  left: 48px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 5;
   display: inline-flex;
   align-items: center;
@@ -85,7 +86,7 @@ body { overflow-x: clip; }
   -webkit-mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
 }
 @media (max-width: 760px) {
-  .wordmark { top: 24px; left: 24px; }
+  .wordmark { top: 24px; }
   .brand-symbol { width: 104px; height: 47px; }
 }
 
@@ -124,7 +125,7 @@ body { overflow-x: clip; }
 .track-display { height: 15%; display: flex; flex-direction: column; justify-content: center; padding: 1px 3px; font: clamp(4px, .7vw, 8px)/1.2 monospace; text-align: center; }
 #track-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #track-position { opacity: .7; }
-.preview-info { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 5; width: min(260px, calc(100vw - 40px)); text-align: right; pointer-events: auto; }
+.preview-info { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 5; width: min(260px, calc(100vw - 40px)); text-align: center; pointer-events: auto; }
 .preview-info p { margin: 0 0 5px; font-size: 8px; line-height: 1.5; }
 .preview-info a { display: inline-block; }
 .preview-info a img { width: 70px; height: auto; }
