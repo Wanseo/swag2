@@ -86,7 +86,8 @@ cameraButton.addEventListener('click', async () => {
 })
 window.addEventListener('pagehide', stopCamera)
 
-// Low-resolution colour field: soft, flowing bands without large image assets.
+// Layered domain warping makes colour boundaries stretch and curl like liquid.
+// The small render surface is softened by CSS; the grain stays on a separate layer.
 const canvas = document.querySelector<HTMLCanvasElement>('#atmosphere')!
 canvas.width = 240
 canvas.height = 160
@@ -98,22 +99,30 @@ let time = 0
 let last = 0
 function draw(now: number) {
   requestAnimationFrame(draw)
-  if (now - last < 50 || document.hidden) return
+  if (now - last < 1000 / 30 || document.hidden) return
   const delta = Math.min((now - last) / 1000, 0.1)
   last = now
-  if (!paused) time += delta * moods[mood].speed
+  if (!paused) time += delta * moods[mood].speed * 3
   const target = moods[mood].colors.map(rgb)
   colors = colors.map((color, i) => color.map((channel, j) => channel + (target[i]![j]! - channel) * 0.065))
   for (let y = 0; y < canvas.height; y++) {
     for (let x = 0; x < canvas.width; x++) {
       const u = x / canvas.width, v = y / canvas.height
-      const warp = Math.sin(u * 5 + time) * 0.26 + Math.cos(v * 5 - time * 0.7) * 0.2
-      const wave = (Math.sin(v * 8 + u * 3 + warp * 6 + time) + 1) / 2
+      const driftX = Math.sin(v * 4.5 + time * 0.85) * 0.23
+        + Math.cos(u * 3.2 - v * 2.4 + time * 0.55) * 0.12
+      const driftY = Math.cos(u * 4.1 - time * 0.7) * 0.2
+        + Math.sin(v * 3.8 + u * 2.1 + time * 0.65) * 0.13
+      const flowX = u + driftX
+      const flowY = v + driftY
+      const curl = Math.sin(flowX * 4.6 + flowY * 3.2 - time * 0.6) * 0.8
+      const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75) + 1) / 2
       const position = wave * 2.999
       const index = Math.floor(position)
       let blend = position - index
       blend = blend * blend * (3 - 2 * blend)
-      const centerLight = Math.exp(-((u - 0.5) ** 2 * 9 + (v - 0.4) ** 2 * 6)) * 0.52
+      const lightX = 0.5 + Math.sin(time * 0.45) * 0.06
+      const lightY = 0.4 + Math.cos(time * 0.4) * 0.05
+      const centerLight = Math.exp(-((u - lightX) ** 2 * 9 + (v - lightY) ** 2 * 6)) * 0.52
       const topLight = Math.max(0, 1 - v * 2.5) * 0.55
       const light = Math.max(centerLight, topLight)
       const offset = (y * canvas.width + x) * 4
