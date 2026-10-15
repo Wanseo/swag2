@@ -1,5 +1,6 @@
 import './style.css'
 import mintPlayer from './assets/mint-player.png'
+import bluePlayer from './assets/blue-player.png'
 
 const moods = {
   daydream: { label: 'Daydream', note: '몽환적인 오후, 느리게 번지는 색', colors: ['#e7e5d7', '#81b5c0', '#e7a4a8', '#326f7c'], speed: 0.13 },
@@ -20,14 +21,12 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <header><a class="wordmark" href="./" aria-label="moodroom 홈">moodroom<span>®</span></a><span class="edition">SOUND INTO COLOUR · VOL. 001</span><button id="motion" class="text-button" aria-pressed="false">움직임 멈추기 <span>Ⅱ</span></button></header>
     <section class="stage" aria-label="음악의 분위기를 담는 공간">
       <figure class="player-foreground">
-        <img src="${mintPlayer}" alt="잔기스가 남은 민트색 빈티지 MP3 플레이어와 분홍색 유선 이어폰" width="1024" height="1536" fetchpriority="high" draggable="false" />
+        <img class="player-cable" src="${mintPlayer}" alt="" aria-hidden="true" width="1024" height="1536" draggable="false" />
+        <img class="player-body" src="${bluePlayer}" alt="반투명 하늘색 케이스와 청록색 화면의 빈티지 MP3 플레이어" fetchpriority="high" draggable="false" />
+        <video id="camera" autoplay playsinline muted hidden></video>
       </figure>
       <div class="stage-caption"><span class="tiny-label">A SPACE TO FEEL</span><h1>지금, 어떤 색의 기분인가요.</h1></div>
-      <div class="portrait" id="portrait">
-        <div class="portrait-halo" aria-hidden="true"></div>
-        <video id="camera" autoplay playsinline muted hidden></video>
-        <div class="camera-placeholder"><svg viewBox="0 0 120 160" fill="none" aria-hidden="true"><ellipse cx="60" cy="46" rx="23" ry="29"/><path d="M13 151v-20c0-28 18-45 47-45s47 17 47 45v20"/></svg><span>YOUR PRESENCE, HERE</span></div>
-      </div>
+      <div class="portrait" id="portrait" aria-hidden="true"></div>
       <div class="camera-controls"><button id="camera-toggle" class="camera-button"><span class="camera-icon" aria-hidden="true">＋</span> 카메라 켜기</button><p id="camera-status" role="status">당신의 모습을 이 공간에 담아보세요</p></div>
     </section>
     <footer><div class="mood-info"><span class="tiny-label"><i></i> COLOUR STUDY / <span id="mood-number">01</span></span><h2 id="mood-title">Daydream</h2><p id="mood-note">${moods.daydream.note}</p></div><div class="palette-control"><span class="tiny-label">CHOOSE YOUR ATMOSPHERE</span><div class="mood-options" role="group" aria-label="분위기 선택">${Object.entries(moods).map(([key, value], i) => `<button class="mood-button" data-mood="${key}" aria-pressed="${i === 0}" aria-label="${value.label}"><span class="swatch" style="background:linear-gradient(135deg, ${value.colors[1]}, ${value.colors[2]}, ${value.colors[3]})"></span><span>${value.label}</span></button>`).join('')}</div></div><div class="connection"><span class="connection-icon">≋</span><span>음악이 색이 되는 순간<small>Spotify 연결 예정 · 지금은 분위기 미리보기</small></span></div></footer>
