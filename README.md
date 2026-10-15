@@ -31,3 +31,5 @@ npm run dev
 `src/swag-ii.json`은 Apple iTunes Lookup API의 미국 카탈로그 앨범 `1837867200` 중 disc 1의 신곡 23곡 메타데이터입니다. 기존 SWAG 수록곡은 제외했습니다. 오디오는 Apple의 원본 미리듣기 URL에서 스트리밍하며 저장소에 음원을 저장하지 않습니다. 제공 구간은 Apple이 지정한 미리듣기이며 곡의 시작 부분과 다를 수 있습니다.
 
 앨범을 홍보하는 iTunes 배지·구매 링크와 `provided courtesy of iTunes` 출처 표기를 유지하세요. 공식 조건: https://performance-partners.apple.com/search-api
+
+재생 중에는 Web Audio API의 저주파 에너지와 순간적인 상승을 분석해 배경에 파장을 만듭니다. 분석은 재생 클릭 이후에만 시작하며, 오디오를 녹음하거나 별도로 저장하지 않습니다. 일시정지·버퍼링·종료 시 효과가 잦아들고, 운영체제의 움직임 줄이기 설정에서는 파장을 표시하지 않습니다.

@@ -1,7 +1,9 @@
 import album from './swag-ii.json'
+import { activateAudioPulse } from './audio-pulse'
 
 export function initializePreviews() {
   const audio = new Audio()
+  audio.crossOrigin = 'anonymous'
   audio.preload = 'none'
   const screen = document.querySelector<HTMLDivElement>('#album-screen')!
   const artwork = document.querySelector<HTMLImageElement>('#album-art')!
@@ -26,6 +28,7 @@ export function initializePreviews() {
     pending = true
     status.textContent = '미리듣기를 불러오는 중…'
     try {
+      activateAudioPulse(audio)
       await audio.play()
     } catch (error) {
       if (requestedVersion !== version || (error instanceof DOMException && error.name === 'AbortError')) return

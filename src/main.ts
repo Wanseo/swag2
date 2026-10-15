@@ -1,4 +1,5 @@
 import { initializePreviews } from './previews'
+import { readAudioPulse } from './audio-pulse'
 
 const moods = {
   daydream: { label: 'Daydream', note: '몽환적인 오후, 느리게 번지는 색', colors: ['#e7e5d7', '#81b5c0', '#e7a4a8', '#326f7c'], speed: 0.13 },
@@ -34,6 +35,18 @@ function startAtmosphere() {
   let colors = palettes[mood]!.map(color => [...color])
   let lastDrawnMood: Mood | undefined
   const horizontalLight = new Float32Array(canvas.width)
+  const distance = new Float32Array(canvas.width * canvas.height)
+  function updateDistances() {
+    const aspect = window.innerWidth / window.innerHeight
+    for (let y = 0; y < canvas.height; y++) {
+      for (let x = 0; x < canvas.width; x++) {
+        distance[y * canvas.width + x] = Math.hypot((x / canvas.width - 0.5) * aspect, y / canvas.height - 0.5)
+      }
+    }
+  }
+  updateDistances()
+  window.addEventListener('resize', updateDistances, { passive: true })
+  let ripples: { started: number; strength: number }[] = []
   let time = 0
   let last = 0
   function draw(now: number) {
@@ -41,6 +54,17 @@ function startAtmosphere() {
     if (now - last < 1000 / 30 || document.hidden) return
     const delta = Math.min((now - last) / 1000, 0.1)
     last = now
+    const pulse = paused ? { energy: 0, beat: 0 } : readAudioPulse(now)
+    if (paused) ripples = []
+    ripples = ripples.filter(ripple => now - ripple.started < 2400)
+    if (pulse.beat) {
+      ripples.push({ started: now, strength: pulse.beat })
+      if (ripples.length > 3) ripples.shift()
+    }
+    const rings = ripples.map(ripple => {
+      const age = (now - ripple.started) / 2400
+      return { radius: age * 1.3, strength: ripple.strength * (1 - age) }
+    })
     if (!paused) time += delta * moods[mood].speed * 2.25
     const target = palettes[mood]!
     const transitioning = colors.some((color, i) => color.some((channel, j) => Math.abs(channel - target[i]![j]!) > 0.1))
@@ -65,7 +89,17 @@ function startAtmosphere() {
         const flowX = u + driftX
         const flowY = v + driftY
         const curl = Math.sin(flowX * 4.6 + flowY * 3.2 - time * 0.6) * 0.8
-        const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75) + 1) / 2
+        let rippleShift = 0
+        const radius = distance[y * canvas.width + x]!
+        for (const ring of rings) {
+          const edge = radius - ring.radius
+          if (Math.abs(edge) < 0.16) {
+            const envelope = (1 - Math.abs(edge) / 0.16) ** 2
+            rippleShift += Math.sin(edge * 38) * envelope * ring.strength * 1.5
+          }
+        }
+        const breathing = pulse.energy * Math.sin(radius * 8 - time) * 0.24
+        const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75 + rippleShift + breathing) + 1) / 2
         const position = wave * 2.999
         const index = Math.floor(position)
         let blend = position - index
