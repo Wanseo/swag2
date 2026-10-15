@@ -191,3 +191,13 @@ body { overflow-x: clip; }
 .track-option { padding: 4% 5%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; cursor: pointer; }
 .track-option[aria-selected=true] { background: #c5e6ed; color: #071318; }
 .track-option:hover { box-shadow: inset 0 0 0 1px #719aa5; }
+
+/* Cover the entire photographed cyan display, including its edge pixels. */
+.album-screen, .track-menu {
+  left: 29%;
+  top: 16.4%;
+  width: 41%;
+  height: 35.5%;
+  background: #000;
+  box-shadow: 0 0 0 1px #000;
+}
