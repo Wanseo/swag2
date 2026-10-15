@@ -1,3 +1,5 @@
+import { initializePreviews } from './previews'
+
 const moods = {
   daydream: { label: 'Daydream', note: '몽환적인 오후, 느리게 번지는 색', colors: ['#e7e5d7', '#81b5c0', '#e7a4a8', '#326f7c'], speed: 0.13 },
   warmth: { label: 'Warmth', note: '따뜻한 리듬, 햇빛에 물든 공기', colors: ['#eee5cf', '#e9b77d', '#d88770', '#96b3b4'], speed: 0.18 },
@@ -85,3 +87,5 @@ function startAtmosphere() {
 }
 
 requestAnimationFrame(() => requestAnimationFrame(startAtmosphere))
+
+initializePreviews()

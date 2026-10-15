@@ -88,3 +88,54 @@ body { overflow-x: clip; }
   .wordmark { top: 24px; left: 24px; }
   .brand-symbol { width: 104px; height: 47px; }
 }
+
+/* Transparent controls follow the photographed physical buttons at every size. */
+.player-hit {
+  position: absolute;
+  z-index: 4;
+  top: 77%;
+  width: 17%;
+  height: 13%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+}
+.player-hit.previous { left: 29%; }
+.player-hit.toggle { left: 42%; }
+.player-hit.next { left: 55%; }
+.player-hit:hover { background: rgb(197 242 255 / 12%); }
+.player-hit:focus-visible { outline: 2px solid #e2faff; outline-offset: 1px; }
+.player-hit.is-playing::after {
+  content: 'Ⅱ';
+  position: absolute;
+  inset: 20%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #b2d9e8;
+  color: #4a8eab;
+  font-size: clamp(15px, 3vw, 25px);
+}
+.album-screen {
+  position: absolute;
+  z-index: 3;
+  left: 30.2%;
+  top: 17.4%;
+  width: 37.6%;
+  height: 34%;
+  background: #061014;
+  color: #dbf5ff;
+  overflow: hidden;
+}
+.album-screen > img { width: 100%; height: 85%; object-fit: cover; }
+.track-display { height: 15%; display: flex; flex-direction: column; justify-content: center; padding: 1px 3px; font: clamp(4px, .7vw, 8px)/1.2 monospace; text-align: center; }
+#track-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#track-position { opacity: .7; }
+.preview-info { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); width: min(340px, 85vw); text-align: center; pointer-events: auto; }
+.preview-info p { margin: 0 0 8px; font-size: 10px; line-height: 1.5; }
+.preview-info a { display: inline-block; }
+.preview-info a img { width: 88px; height: auto; }
+.preview-info small { display: block; margin-top: 4px; font-size: 8px; opacity: .7; }
+.album-screen[hidden], .preview-info[hidden] { display: none; }

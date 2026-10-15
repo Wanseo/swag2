@@ -23,3 +23,11 @@ npm run dev
 `vite.config.ts`의 `base`는 `/swag2/`입니다. 저장소 이름을 바꾸면 이 값도 바꾸세요. 사용자 사이트(`사용자명.github.io`)나 사용자 지정 도메인을 쓰면 `/`로 설정하세요.
 
 `src/assets/` 파일은 import하여 사용하세요. `public/` 파일을 TypeScript 문자열에서 참조할 때는 `${import.meta.env.BASE_URL}파일명`으로 경로를 만드세요. HTML에서는 `%BASE_URL%파일명`을 사용할 수 있습니다.
+
+## SWAG II 미리듣기
+
+시작 화면은 기존 이미지입니다. 플레이어의 양옆 버튼으로 곡을 고르면 앨범 표지가 표시되고, 가운데 버튼으로 로그인 없이 공식 미리듣기를 재생·정지합니다. 재생 중 곡을 넘기면 새 미리듣기가 이어집니다. 미리듣기가 끝나면 자동 재생을 멈춥니다.
+
+`src/swag-ii.json`은 Apple iTunes Lookup API의 미국 카탈로그 앨범 `1837867200` 중 disc 1의 신곡 23곡 메타데이터입니다. 기존 SWAG 수록곡은 제외했습니다. 오디오는 Apple의 원본 미리듣기 URL에서 스트리밍하며 저장소에 음원을 저장하지 않습니다. 제공 구간은 Apple이 지정한 미리듣기이며 곡의 시작 부분과 다를 수 있습니다.
+
+앨범을 홍보하는 iTunes 배지·구매 링크와 `provided courtesy of iTunes` 출처 표기를 유지하세요. 공식 조건: https://performance-partners.apple.com/search-api
