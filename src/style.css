@@ -44,6 +44,8 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   filter: drop-shadow(5px 15px 15px rgb(28 55 57 / 15%));
 }
 .player-cable {
+  /* Temporarily hidden; retain the asset and placement for restoring later. */
+  display: none !important;
   position: absolute;
   width: 160%;
   left: 12%;
