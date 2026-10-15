@@ -200,13 +200,13 @@ body { overflow-x: clip; }
 }
 .player-body {
   filter:
-    drop-shadow(3px 9px 7px rgb(28 55 57 / 12%))
-    drop-shadow(12px 35px 26px rgb(28 55 57 / 24%));
+    drop-shadow(4px 12px 8px rgb(28 55 57 / 19%))
+    drop-shadow(16px 43px 30px rgb(28 55 57 / 32%));
 }
 .brand-symbol {
   filter:
-    drop-shadow(0 3px 3px rgb(35 86 112 / 12%))
-    drop-shadow(3px 12px 8px rgb(35 86 112 / 23%));
+    drop-shadow(0 4px 4px rgb(35 86 112 / 19%))
+    drop-shadow(5px 16px 11px rgb(35 86 112 / 32%));
 }
 
 /* A fixed centre creates a camera-like zoom without moving the playback controls. */
