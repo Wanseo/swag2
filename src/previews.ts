@@ -10,6 +10,8 @@ export function initializePreviews(onTrackSelected?: (title: string) => void) {
   const audio = new Audio()
   audio.crossOrigin = 'anonymous'
   audio.preload = 'none'
+  audio.setAttribute('playsinline', '')
+  audio.setAttribute('webkit-playsinline', '')
   const screen = document.querySelector<HTMLDivElement>('#album-screen')!
   const artwork = document.querySelector<HTMLImageElement>('#album-art')!
   const title = document.querySelector('#track-title')!
@@ -118,6 +120,7 @@ export function initializePreviews(onTrackSelected?: (title: string) => void) {
     const track = album.tracks[selected]!
     onTrackSelected?.(track.title)
     audio.src = track.preview
+    audio.load()
     if (!artwork.hasAttribute('src')) artwork.src = album.artwork
     title.textContent = track.title
     position.textContent = `SWAG II · ${String(selected + 1).padStart(2, '0')} / ${album.tracks.length}`

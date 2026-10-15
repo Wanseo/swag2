@@ -1,16 +1,26 @@
-/** A short local sound, separate from music analysis so it cannot trigger bass waves. */
+import { getAudioContext } from './audio-context'
+
+/** Mix clicks directly to output, without interrupting mobile media playback. */
 export function createButtonSound() {
-  const click = new Audio(`${import.meta.env.BASE_URL}audio/button-click.wav`)
-  click.preload = 'auto'
-  click.volume = 1
-  click.load()
-  window.addEventListener('pagehide', () => click.pause())
+  const bytes = fetch(`${import.meta.env.BASE_URL}audio/button-click.wav`)
+    .then(response => response.ok ? response.arrayBuffer() : undefined)
+    .catch(() => undefined)
+  let decoded: Promise<AudioBuffer | undefined> | undefined
+  let active: AudioBufferSourceNode | undefined
+  window.addEventListener('pagehide', () => { active?.stop(); active = undefined })
   return () => {
-    try {
-      click.currentTime = 0
-      void click.play().catch(() => {})
-    } catch {
-      // Button actions still work if sound is unavailable or blocked.
-    }
+    const context = getAudioContext()
+    if (!context) return
+    decoded ??= bytes.then(data => data ? context.decodeAudioData(data) : undefined).catch(() => undefined)
+    void decoded.then(buffer => {
+      if (!buffer || context.state !== 'running' || document.hidden) return
+      active?.stop()
+      const sound = context.createBufferSource()
+      sound.buffer = buffer
+      sound.connect(context.destination)
+      sound.onended = () => { sound.disconnect(); if (active === sound) active = undefined }
+      active = sound
+      sound.start()
+    })
   }
 }

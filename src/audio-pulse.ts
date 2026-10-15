@@ -1,3 +1,5 @@
+import { getAudioContext } from './audio-context'
+
 let context: AudioContext | undefined
 let analyser: AnalyserNode | undefined
 let source: MediaElementAudioSourceNode | undefined
@@ -15,7 +17,8 @@ export function activateAudioPulse(audio: HTMLAudioElement) {
   media = audio
   if (!context) {
     try {
-      context = new AudioContext()
+      context = getAudioContext()
+      if (!context) return
       const nextAnalyser = context.createAnalyser()
       nextAnalyser.fftSize = 4096
       nextAnalyser.smoothingTimeConstant = 0.25
@@ -33,7 +36,7 @@ export function activateAudioPulse(audio: HTMLAudioElement) {
       analyser = undefined
     }
   }
-  if (context?.state === 'suspended') void context.resume().catch(() => {})
+  if (context && context.state !== 'running') void context.resume().catch(() => {})
 }
 
 export function readAudioPulse(now: number) {

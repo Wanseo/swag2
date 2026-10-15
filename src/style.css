@@ -232,4 +232,16 @@ body { overflow-x: clip; }
 }
 @media (pointer: coarse) {
   .experience { min-height: 100svh; }
+  /* Avoid mobile WebView filter surfaces painting rectangular image bounds. */
+  .player-levitation { transform: none; }
+  .player-body { filter: none; -webkit-touch-callout: none; }
+  .player-foreground::before {
+    content: '';
+    position: absolute;
+    inset: 5% 8% 2%;
+    border-radius: 50%;
+    box-shadow: 8px 22px 28px rgb(28 55 57 / 24%);
+    pointer-events: none;
+  }
+  .brand-symbol { filter: none; }
 }
