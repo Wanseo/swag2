@@ -50,8 +50,8 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   top: -32%;
   transform-origin: 0 50%;
   transform: rotate(5deg);
-  /* Hide the unused plug while retaining the original loops behind the player. */
-  mask-image: radial-gradient(ellipse 11% 13% at 29% 68%, transparent 75%, #000 100%);
+  /* Retain the upper earphones, hiding the loose lower-left loop and spare plug. */
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 66%);
   pointer-events: none;
   opacity: .85;
   filter: blur(1.2px) saturate(.9) drop-shadow(3px 5px 4px rgb(28 55 57 / 12%));
@@ -64,14 +64,23 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   left: 50%;
   top: 97%;
   transform-origin: 27.8% 68%;
-  transform: translate(-27.8%, -68%) rotate(160deg);
-  /* Keep the photographed plug and cable together, fading only the far end. */
-  mask-image: linear-gradient(to bottom, transparent 48%, #000 58%);
+  transform: translate(-27.8%, -68%) rotate(-160deg) scaleX(-1);
+  /* Mirror the photographed loop toward the right; blend focus along the cable. */
+  mask-image:
+    linear-gradient(to bottom, transparent 48%, #000 58%),
+    linear-gradient(to right, #000 32%, transparent 85%);
+  mask-composite: intersect;
   pointer-events: none;
   opacity: 1;
   filter: drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
 }
 .player-plug img { width: 100%; }
+.player-plug--soft {
+  mask-image:
+    linear-gradient(to bottom, transparent 48%, #000 58%),
+    linear-gradient(to right, transparent 32%, #000 85%);
+  filter: blur(1.6px) saturate(.9) drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
+}
 .player-cable::after {
   content: '';
   position: absolute;
