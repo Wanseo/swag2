@@ -72,8 +72,17 @@ body { overflow-x: clip; }
   .player-cable { width: 125%; left: 0; top: -35%; }
 }
 
-.wordmark { display: inline-flex; align-items: center; flex-shrink: 0; }
+.wordmark {
+  position: fixed;
+  top: 32px;
+  left: 48px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
 .brand-symbol { display: block; width: 124px; height: 56px; object-fit: contain; }
 @media (max-width: 760px) {
+  .wordmark { top: 24px; left: 24px; }
   .brand-symbol { width: 104px; height: 47px; }
 }
