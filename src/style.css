@@ -9,8 +9,8 @@
   z-index: 0;
   opacity: .48;
   mix-blend-mode: soft-light;
-  background: url('./assets/fine-grain.png') repeat;
-  background-size: 112px 112px;
+  background: url('./assets/fine-grain-inline.png?inline') repeat;
+  background-size: 56px 56px;
 }
 
 .experience{position:relative;z-index:1;min-height:100svh;padding:32px 48px 30px;display:flex;flex-direction:column}header{display:flex;align-items:center;justify-content:space-between;gap:20px}.edition,.tiny-label{font-size:10px;letter-spacing:2px;font-weight:500}.edition{opacity:.65;margin-left:50px}.text-button{background:transparent;font-size:11px;display:flex;gap:18px;align-items:center}.text-button span{font-size:17px}
