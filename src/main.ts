@@ -18,7 +18,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <canvas id="atmosphere" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
   <main class="experience">
-    <header><a class="wordmark" href="./" aria-label="홈"><img src="${blueSymbol}" alt="파란 심볼" class="brand-symbol" fetchpriority="high" /></a><span class="edition">SOUND INTO COLOUR · VOL. 001</span><button id="motion" class="text-button" aria-pressed="false">움직임 멈추기 <span>Ⅱ</span></button></header>
+    <header><a class="wordmark" href="./" aria-label="홈"><img src="${blueSymbol}" alt="파란 심볼" class="brand-symbol" fetchpriority="high" /></a><span class="edition">SOUND INTO COLOUR · VOL. 001</span><button id="motion" class="text-button" aria-pressed="false" aria-label="움직임 멈추기"><span aria-hidden="true">Ⅱ</span></button></header>
     <section class="stage" aria-label="음악의 분위기를 담는 공간">
       <figure class="player-foreground">
         <img class="player-cable" src="${pinkEarphones}" alt="" aria-hidden="true" width="1024" height="1536" draggable="false" />
@@ -43,7 +43,8 @@ const motionButton = document.querySelector<HTMLButtonElement>('#motion')!
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 function updateMotion() {
   motionButton.setAttribute('aria-pressed', String(paused))
-  motionButton.innerHTML = paused ? '움직임 재생 <span>▷</span>' : '움직임 멈추기 <span>Ⅱ</span>'
+  motionButton.setAttribute('aria-label', paused ? '움직임 재생' : '움직임 멈추기')
+  motionButton.innerHTML = paused ? '<span aria-hidden="true">▷</span>' : '<span aria-hidden="true">Ⅱ</span>'
 }
 paused = reducedMotion.matches
 updateMotion()
