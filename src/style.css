@@ -23,7 +23,9 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 /* Anchor the body itself, independently of the asymmetric cable, at viewport centre. */
-:root { --player-width: min(320px, 58vw, 34svh); }
+:root { --player-width: min(580px, 84vw, 56svh); }
+/* Give the enlarged centrepiece and its controls a full first screen. */
+.stage { min-height: max(620px, calc(100svh - 64px)); }
 .player-foreground {
   position: fixed;
   left: 50%;
@@ -61,7 +63,7 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 }
 .stage-caption {
   position: fixed;
-  top: calc(50svh - var(--player-width) * .6 - 76px);
+  top: calc(50svh - var(--player-width) * .6 - 56px);
   left: 50%;
   width: max-content;
   max-width: calc(100vw - 40px);
@@ -76,4 +78,9 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   max-width: calc(100vw - 36px);
   transform: translateX(-50%);
   z-index: 3;
+}
+@media (max-height: 650px) {
+  .stage-caption { top: calc(50svh - var(--player-width) * .6 - 30px); }
+  .stage-caption .tiny-label { display: none; }
+  .stage-caption h1 { font-size: 14px; margin: 0; }
 }
