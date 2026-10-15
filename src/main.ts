@@ -82,8 +82,8 @@ function startAtmosphere() {
         const i = y * canvas.width + x
         const rippleShift = sampleRipples(i, geometry, fronts)
         const breathing = pulse.energy * (
-          Math.sin(flowX * 6 + flowY * 4 - time) * 0.24
-          + geometry.sin3[i]! * Math.sin(geometry.radius[i]! * 9 - time * 0.7) * 0.18)
+          Math.sin(flowX * 6 + flowY * 4 - time) * 0.16
+          + geometry.sin3[i]! * Math.sin(geometry.radius[i]! * 9 - time * 0.7) * 0.12)
         const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75 + rippleShift + breathing) + 1) / 2
         const position = wave * 2.999
         const index = Math.floor(position)
