@@ -208,3 +208,13 @@ body { overflow-x: clip; }
     drop-shadow(0 3px 3px rgb(35 86 112 / 12%))
     drop-shadow(3px 12px 8px rgb(35 86 112 / 23%));
 }
+
+/* A fixed centre creates a camera-like zoom without moving the playback controls. */
+.player-levitation {
+  transform: scale(var(--view-zoom, 1));
+  transform-origin: 50% 50%;
+}
+#atmosphere {
+  transform: translateY(var(--background-scroll, 0px)) scale(calc(.85 + var(--view-zoom, 1) * .15));
+  transform-origin: 50% 50%;
+}

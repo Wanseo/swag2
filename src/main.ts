@@ -1,3 +1,4 @@
+import { initializePerspective } from './perspective'
 import { initializePreviews } from './previews'
 import { readAudioPulse } from './audio-pulse'
 import { createRippleGeometry, createRippleFronts, sampleRipples, type BassRipple } from './ripples'
@@ -121,3 +122,5 @@ window.addEventListener('scroll', () => {
 }, { passive: true })
 window.addEventListener('pageshow', updateBackgroundScroll)
 updateBackgroundScroll()
+
+initializePerspective()
