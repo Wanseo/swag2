@@ -69,7 +69,7 @@ body { overflow-x: clip; }
 
 .wordmark {
   position: fixed;
-  top: 32px;
+  top: 44px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
@@ -91,7 +91,7 @@ body { overflow-x: clip; }
   -webkit-mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
 }
 @media (max-width: 760px) {
-  .wordmark { top: 24px; }
+  .wordmark { top: 36px; }
   .brand-symbol { width: 104px; height: 47px; }
 }
 
@@ -131,10 +131,10 @@ body { overflow-x: clip; }
 #track-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #track-position { opacity: .7; }
 .preview-info { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 5; width: min(260px, calc(100vw - 40px)); text-align: center; pointer-events: auto; }
-.preview-info p { margin: 0 0 5px; font-size: 8px; line-height: 1.5; }
-.preview-info a { display: inline-block; }
-.preview-info a img { width: 70px; height: auto; }
-.preview-info small { display: block; margin-top: 3px; font-size: 7px; opacity: .7; }
+.preview-info p { margin: 0 0 4px; font-size: 7px; line-height: 1.5; }
+.preview-info a { display: inline-block; margin-bottom: 6px; }
+.preview-info a img { width: 64px; height: auto; }
+.preview-info small { display: block; margin-top: 2px; font-size: 6px; opacity: .7; }
 .album-screen[hidden], .preview-info[hidden] { display: none; }
 
 /* Keep the player in place while a continuous background shifts underneath. */
