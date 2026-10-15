@@ -8,6 +8,10 @@ export function rippleDuration(strength: number) {
 /** Cache the spatial harmonics instead of recalculating angles every frame. */
 export function createRippleGeometry(width: number, height: number, aspect: number, centerX: number, centerY: number) {
   const radius = new Float32Array(width * height)
+  const sin1 = new Float32Array(radius.length)
+  const cos1 = new Float32Array(radius.length)
+  const sin2 = new Float32Array(radius.length)
+  const cos2 = new Float32Array(radius.length)
   const sin3 = new Float32Array(radius.length)
   const cos3 = new Float32Array(radius.length)
   const sin5 = new Float32Array(radius.length)
@@ -21,13 +25,17 @@ export function createRippleGeometry(width: number, height: number, aspect: numb
       const i = y * width + x
       radius[i] = Math.hypot(dx, dy)
       maxRadius = Math.max(maxRadius, radius[i]!)
+      sin1[i] = Math.sin(angle)
+      cos1[i] = Math.cos(angle)
+      sin2[i] = Math.sin(angle * 2)
+      cos2[i] = Math.cos(angle * 2)
       sin3[i] = Math.sin(angle * 3)
       cos3[i] = Math.cos(angle * 3)
       sin5[i] = Math.sin(angle * 5)
       cos5[i] = Math.cos(angle * 5)
     }
   }
-  return { radius, sin3, cos3, sin5, cos5, maxRadius }
+  return { radius, sin1, cos1, sin2, cos2, sin3, cos3, sin5, cos5, maxRadius }
 }
 
 export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius: number) {
@@ -37,14 +45,16 @@ export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius
     const width = 0.035 + intensity * 0.15
     // A kick launches quickly, then settles into an outward travelling wave.
     const travel = 1 - (1 - age) ** (1.15 + ripple.strength * 0.65)
-    const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -1.4 : 1.4)
+    const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -0.45 : 0.45)
     return {
       // Clear even the farthest corner, including the angular warp and ring width.
-      radius: travel * (maxRadius * 1.145 + width + 0.01),
+      radius: travel * (maxRadius * 1.555 + width * 1.4 + 0.01),
       strength: (0.1 + intensity * 3.6) * (1 - age * 0.5),
       width,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),
+      sin3: Math.sin(phase * 1.37), cos3: Math.cos(phase * 1.37),
+      sin4: Math.sin(phase * 0.41), cos4: Math.cos(phase * 0.41),
     }
   })
 }
@@ -53,13 +63,18 @@ export function sampleRipples(index: number, geometry: ReturnType<typeof createR
   let shift = 0
   const radius = geometry.radius[index]!
   for (const front of fronts) {
+    const lean = geometry.sin1[index]! * front.cos3 + geometry.cos1[index]! * front.sin3
+    const stretch = geometry.sin2[index]! * front.cos4 - geometry.cos2[index]! * front.sin4
     const fold = geometry.sin3[index]! * front.cos + geometry.cos3[index]! * front.sin
     const flutter = geometry.sin5[index]! * front.cos2 - geometry.cos5[index]! * front.sin2
-    const warpedRadius = radius * (1 + fold * 0.1 + flutter * 0.045)
+    // Uneven directional travel breaks the ring into broad, asymmetric surges.
+    const warpedRadius = radius * (1 + lean * 0.22 + stretch * 0.14 + fold * 0.13 + flutter * 0.065)
     const edge = warpedRadius - front.radius
-    if (Math.abs(edge) < front.width) {
-      const envelope = Math.cos(edge / front.width * Math.PI / 2) ** 2
-      shift += Math.sin(edge / front.width * Math.PI * 2) * envelope * front.strength * (1.5 + flutter * 0.2)
+    const width = front.width * (1 + stretch * 0.25 + flutter * 0.15)
+    if (Math.abs(edge) < width) {
+      const envelope = Math.cos(edge / width * Math.PI / 2) ** 2
+      const surge = 0.95 + lean * 0.4 + fold * 0.25
+      shift += Math.sin(edge / width * Math.PI * 2) * envelope * front.strength * surge
     }
   }
   return shift
