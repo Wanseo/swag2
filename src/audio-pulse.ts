@@ -52,7 +52,7 @@ export function readAudioPulse(now: number) {
   energy += (bass - energy) * (bass > energy ? 0.5 : 0.1)
   const onset = bass - previousBass
   const beat = bass > 0.12 && now - lastBeat > 210 && onset > 0.025 && bass > baseline + 0.035
-    ? Math.min(1, bass * 1.4) : 0
+    ? Math.min(1, bass * 1.6) : 0
   if (beat) lastBeat = now
   baseline += (bass - baseline) * 0.07
   previousBass = bass
