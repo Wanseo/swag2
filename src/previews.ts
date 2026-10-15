@@ -1,12 +1,15 @@
 import album from './swag-ii.json'
 import { activateAudioPulse } from './audio-pulse'
+import { createButtonSound } from './button-sound'
 
 export function initializePreviews(onTrackSelected?: (title: string) => void) {
+  const playButtonSound = createButtonSound()
   const player = document.querySelector<HTMLElement>('.player-foreground')!
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
   let pressAnimation: Animation | undefined
   document.querySelectorAll<HTMLButtonElement>('.player-hit').forEach(button => {
     button.addEventListener('click', () => {
+      playButtonSound()
       if (motionPreference.matches || !player.animate) return
       const left = button.classList.contains('previous') || button.classList.contains('menu')
       const right = button.classList.contains('next') || button.classList.contains('replay')
