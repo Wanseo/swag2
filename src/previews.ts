@@ -2,6 +2,28 @@ import album from './swag-ii.json'
 import { activateAudioPulse } from './audio-pulse'
 
 export function initializePreviews(onTrackSelected?: (title: string) => void) {
+  const player = document.querySelector<HTMLElement>('.player-foreground')!
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+  let pressAnimation: Animation | undefined
+  document.querySelectorAll<HTMLButtonElement>('.player-hit').forEach(button => {
+    button.addEventListener('click', () => {
+      if (motionPreference.matches || !player.animate) return
+      const left = button.classList.contains('previous') || button.classList.contains('menu')
+      const right = button.classList.contains('next') || button.classList.contains('replay')
+      const up = button.classList.contains('up')
+      const down = button.classList.contains('down')
+      const x = left ? -1.5 : right ? 1.5 : 0
+      const y = up ? -1.5 : down ? 1.5 : 0
+      const scaleX = left || right ? 1.008 : 1.003
+      const scaleY = up || down ? 1.008 : 1.003
+      pressAnimation?.cancel()
+      pressAnimation = player.animate([
+        { transform: 'translate(-50%, -50%) scale(1)' },
+        { transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${scaleX}, ${scaleY})`, offset: 0.28 },
+        { transform: 'translate(-50%, -50%) scale(1)' },
+      ], { duration: 280, easing: 'cubic-bezier(.2,.65,.3,1)' })
+    })
+  })
   const audio = new Audio()
   audio.crossOrigin = 'anonymous'
   audio.preload = 'none'
