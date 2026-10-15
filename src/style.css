@@ -244,4 +244,6 @@ body { overflow-x: clip; }
     pointer-events: none;
   }
   .brand-symbol { filter: none; }
+  .wordmark::after { display: none; }
+  .preview-info { right: max(30px, env(safe-area-inset-right)); width: min(260px, calc(100vw - 50px)); }
 }
