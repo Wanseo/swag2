@@ -33,7 +33,7 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 .player-foreground {
   position: fixed;
   left: 50%;
-  top: calc(50% + 12px);
+  top: calc(50% + 24px);
   width: var(--player-width);
   margin: 0;
   z-index: 2;
