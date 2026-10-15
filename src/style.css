@@ -9,7 +9,7 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: .34;
+  opacity: .48;
   mix-blend-mode: soft-light;
   background: url('./assets/fine-grain.png') repeat;
   background-size: 112px 112px;
