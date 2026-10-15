@@ -245,5 +245,5 @@ body { overflow-x: clip; }
   }
   .brand-symbol { filter: none; }
   .wordmark::after { display: none; }
-  .preview-info { right: max(30px, env(safe-area-inset-right)); width: min(260px, calc(100vw - 50px)); }
+  .preview-info { right: max(20px, env(safe-area-inset-right)); width: min(260px, calc(100vw - 40px)); }
 }
