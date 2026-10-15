@@ -49,7 +49,7 @@ export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius
     return {
       // Clear even the farthest corner, including the angular warp and ring width.
       radius: travel * (maxRadius * 1.155 + width * 1.12 + 0.01),
-      strength: (0.06 + intensity * 0.85) * (1 - age * 0.5),
+      strength: (0.06 + intensity * 0.75) * (1 - age * 0.5),
       width,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),
@@ -68,7 +68,7 @@ export function sampleRipples(index: number, geometry: ReturnType<typeof createR
     const fold = geometry.sin3[index]! * front.cos + geometry.cos3[index]! * front.sin
     const flutter = geometry.sin5[index]! * front.cos2 - geometry.cos5[index]! * front.sin2
     // Subtle asymmetry keeps the contour organic without deep folds.
-    const warpedRadius = radius * (1 + lean * 0.08 + stretch * 0.045 + fold * 0.022 + flutter * 0.008)
+    const warpedRadius = radius * (1 + lean * 0.068 + stretch * 0.038 + fold * 0.019 + flutter * 0.007)
     const edge = warpedRadius - front.radius
     const width = front.width * (1 + stretch * 0.09 + flutter * 0.03)
     if (Math.abs(edge) < width) {
