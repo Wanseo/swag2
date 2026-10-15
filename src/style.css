@@ -234,6 +234,7 @@ body { overflow-x: clip; }
   .experience { min-height: 100svh; }
   /* Avoid mobile WebView filter surfaces painting rectangular image bounds. */
   .player-levitation { transform: none; }
+  .player-foreground { top: calc(50% + 12px); }
   .player-body { filter: none; -webkit-touch-callout: none; }
   .player-foreground::before {
     content: '';
