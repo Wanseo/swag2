@@ -15,8 +15,8 @@ export function activateAudioPulse(audio: HTMLAudioElement) {
     try {
       context = new AudioContext()
       const nextAnalyser = context.createAnalyser()
-      nextAnalyser.fftSize = 1024
-      nextAnalyser.smoothingTimeConstant = 0.55
+      nextAnalyser.fftSize = 2048
+      nextAnalyser.smoothingTimeConstant = 0.25
       source = context.createMediaElementSource(audio)
       source.connect(nextAnalyser)
       nextAnalyser.connect(context.destination)
@@ -43,17 +43,18 @@ export function readAudioPulse(now: number) {
   }
   analyser.getByteFrequencyData(bins)
   const binHz = context.sampleRate / analyser.fftSize
-  const start = Math.max(1, Math.floor(55 / binHz))
-  const end = Math.min(bins.length - 1, Math.ceil(240 / binHz))
+  // Only bass-band bins drive visuals; playback itself remains unfiltered.
+  const start = Math.max(1, Math.ceil(40 / binHz))
+  const end = Math.min(bins.length - 1, Math.floor(160 / binHz))
   let bass = 0
   for (let i = start; i <= end; i++) bass += bins[i]! / 255
   bass /= end - start + 1
-  energy += (bass - energy) * (bass > energy ? 0.35 : 0.12)
+  energy += (bass - energy) * (bass > energy ? 0.5 : 0.1)
   const onset = bass - previousBass
-  const beat = bass > 0.16 && now - lastBeat > 240 && (onset > 0.045 || bass > baseline * 1.18 + 0.035)
-    ? Math.min(1, bass * 1.2) : 0
+  const beat = bass > 0.12 && now - lastBeat > 210 && onset > 0.025 && bass > baseline + 0.035
+    ? Math.min(1, bass * 1.4) : 0
   if (beat) lastBeat = now
-  baseline += (bass - baseline) * 0.09
+  baseline += (bass - baseline) * 0.07
   previousBass = bass
   return { energy, beat }
 }
