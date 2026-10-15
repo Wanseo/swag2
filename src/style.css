@@ -97,7 +97,7 @@ body { overflow-x: clip; }
   -webkit-mask: url('./assets/blue-symbol.webp') center / contain no-repeat;
 }
 @media (max-width: 760px) {
-  .wordmark { top: 56px; }
+  .wordmark { top: 24px; left: 24px; transform: none; }
   .brand-symbol { width: 104px; height: 47px; }
 }
 
