@@ -1,6 +1,10 @@
 export type BassRipple = { started: number; strength: number; seed: number }
 export const RIPPLE_DURATION = 4200
 
+export function rippleDuration(strength: number) {
+  return RIPPLE_DURATION - Math.max(0, Math.min(1, strength)) * 1900
+}
+
 /** Cache the spatial harmonics instead of recalculating angles every frame. */
 export function createRippleGeometry(width: number, height: number, aspect: number, centerX: number, centerY: number) {
   const radius = new Float32Array(width * height)
@@ -28,14 +32,17 @@ export function createRippleGeometry(width: number, height: number, aspect: numb
 
 export function createRippleFronts(ripples: BassRipple[], now: number, maxRadius: number) {
   return ripples.map(ripple => {
-    const age = Math.max(0, Math.min(1, (now - ripple.started) / RIPPLE_DURATION))
-    const intensity = Math.sqrt(ripple.strength)
+    const age = Math.max(0, Math.min(1, (now - ripple.started) / rippleDuration(ripple.strength)))
+    const intensity = ripple.strength ** 1.3
+    const width = 0.035 + intensity * 0.15
+    // A kick launches quickly, then settles into an outward travelling wave.
+    const travel = 1 - (1 - age) ** (1.15 + ripple.strength * 0.65)
     const phase = ripple.seed * 2.39996 + age * (ripple.seed % 2 ? -1.4 : 1.4)
     return {
       // Clear even the farthest corner, including the angular warp and ring width.
-      radius: age * (maxRadius * 1.145 + 0.15),
-      strength: intensity * (1.1 + ripple.strength * 1.6) * (1 - age * 0.45),
-      width: 0.065 + intensity * 0.075,
+      radius: travel * (maxRadius * 1.145 + width + 0.01),
+      strength: (0.1 + intensity * 3.6) * (1 - age * 0.5),
+      width,
       sin: Math.sin(phase), cos: Math.cos(phase),
       sin2: Math.sin(phase * 0.67), cos2: Math.cos(phase * 0.67),
     }

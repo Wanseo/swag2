@@ -1,7 +1,7 @@
 import { initializePerspective } from './perspective'
 import { initializePreviews } from './previews'
 import { readAudioPulse } from './audio-pulse'
-import { createRippleGeometry, createRippleFronts, sampleRipples, RIPPLE_DURATION, type BassRipple } from './ripples'
+import { createRippleGeometry, createRippleFronts, sampleRipples, rippleDuration, type BassRipple } from './ripples'
 import { moods, trackAtmospheres, type Mood } from './atmospheres'
 
 let mood: Mood = 'daydream'
@@ -50,7 +50,7 @@ function startAtmosphere() {
     last = now
     const pulse = paused ? { energy: 0, beat: 0 } : readAudioPulse(now)
     if (paused) ripples = []
-    ripples = ripples.filter(ripple => now - ripple.started < RIPPLE_DURATION)
+    ripples = ripples.filter(ripple => now - ripple.started < rippleDuration(ripple.strength))
     if (pulse.beat) {
       ripples.push({ started: now, strength: pulse.beat, seed: ++beatNumber })
     }

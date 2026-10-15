@@ -7,6 +7,8 @@ let energy = 0
 let baseline = 0
 let previousBass = 0
 let lastBeat = -1000
+let bassPeak = 0.18
+let lastRead = 0
 
 /** Create the audio graph only inside the user's play gesture. */
 export function activateAudioPulse(audio: HTMLAudioElement) {
@@ -35,10 +37,13 @@ export function activateAudioPulse(audio: HTMLAudioElement) {
 }
 
 export function readAudioPulse(now: number) {
+  const elapsed = Math.min(100, Math.max(1, lastRead ? now - lastRead : 33))
+  lastRead = now
   if (!analyser || !bins || !context || context.state !== 'running' || !media || media.paused || media.ended || media.readyState < 3) {
     energy *= 0.85
     baseline = 0
     previousBass = 0
+    bassPeak = 0.18
     return { energy, beat: 0 }
   }
   analyser.getByteFrequencyData(bins)
@@ -60,10 +65,14 @@ export function readAudioPulse(now: number) {
   const dominance = rawBass / (vocalBand + 0.08)
   const gate = Math.max(0, Math.min(1, (dominance - 0.9) / 0.8))
   const bass = rawBass * gate
+  // Follow the track's recent loudness so quiet kicks retain their own dynamics.
+  bassPeak = Math.max(0.18, bass, bassPeak * Math.exp(-elapsed / 2600))
   energy += (bass - energy) * (bass > energy ? 0.5 : 0.1)
   const onset = bass - previousBass
-  const beat = bass > 0.12 && now - lastBeat > 210 && onset > 0.025 && bass > baseline + 0.035
-    ? 0.12 + 0.88 * Math.max(0, Math.min(1, (bass - 0.12) / 0.78)) ** 1.45 : 0
+  const relativeLevel = Math.min(1, bass / bassPeak)
+  const attack = Math.min(1, Math.max(0, bass - baseline) / Math.max(0.08, bassPeak * 0.65))
+  const beat = bass > 0.065 && now - lastBeat > 150 && onset > Math.max(0.012, bassPeak * 0.035) && bass > baseline + 0.018
+    ? Math.max(0.06, Math.min(1, relativeLevel ** 1.8 * (0.35 + attack * 0.65))) : 0
   if (beat) lastBeat = now
   baseline += (bass - baseline) * 0.07
   previousBass = bass
