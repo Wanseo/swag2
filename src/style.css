@@ -193,6 +193,17 @@ body { overflow-x: clip; }
   box-shadow: 0 0 0 1px #000;
 }
 
+/* A fine reflected edge and faint light spill around the black screen bezel. */
+.album-screen {
+  border-radius: 1px;
+  box-shadow:
+    inset 1px 1px 0 rgb(175 213 218 / 15%),
+    inset -1px -1px 0 rgb(116 156 164 / 10%),
+    0 0 0 1px rgb(12 22 26 / 95%),
+    -1px -1px 2px rgb(183 217 222 / 19%),
+    0 0 5px rgb(115 199 211 / 10%);
+}
+
 /* Stationary objects with soft, layered shadows for a lifted appearance. */
 .player-levitation {
   position: fixed;
