@@ -65,8 +65,8 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   transform: translate(-27.8%, -68%) rotate(160deg);
   clip-path: polygon(22% 59%, 37% 59%, 37% 76%, 22% 76%);
   pointer-events: none;
-  opacity: .85;
-  filter: blur(1.2px) saturate(.9);
+  opacity: 1;
+  filter: drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
 }
 .player-plug img { width: 100%; }
 .plug-return {
@@ -78,8 +78,8 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   z-index: 0;
   overflow: visible;
   pointer-events: none;
-  opacity: .85;
-  filter: blur(1.2px) saturate(.9);
+  opacity: 1;
+  filter: drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
 }
 .plug-return path { fill: none; stroke: #ed3284; stroke-width: 15; stroke-linecap: round; }
 .player-cable::after {
