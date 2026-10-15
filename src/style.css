@@ -134,7 +134,7 @@ body { overflow-x: clip; }
 #track-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #track-position { opacity: .7; }
 /* Video recording placement: right 90px, bottom 18px, right aligned. */
-.preview-info { position: fixed; right: env(safe-area-inset-right, 0px); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 5; width: min(260px, calc(100vw - 20px)); text-align: right; pointer-events: auto; }
+.preview-info { position: fixed; right: max(40px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 5; width: min(260px, calc(100vw - 60px)); text-align: right; pointer-events: auto; }
 .preview-info p { margin: 0 0 4px; font-size: 7px; line-height: 1.5; }
 .preview-info a { display: inline-block; margin-bottom: 6px; }
 .preview-info a img { width: 64px; height: auto; }
