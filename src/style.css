@@ -119,24 +119,6 @@ body { overflow-x: clip; }
 .player-hit.toggle { left: 42%; }
 .player-hit.next { left: 55%; }
 .player-hit { -webkit-tap-highlight-color: transparent; }
-.player-hit::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: rgb(197 242 255 / 22%);
-  opacity: 0;
-  pointer-events: none;
-}
-.player-hit.press-feedback::before { animation: button-glow .75s ease-out both; }
-@keyframes button-glow {
-  0% { opacity: 0; transform: scale(.88); }
-  12% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.08); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .player-hit.press-feedback::before { animation-duration: .15s; }
-}
 .player-hit:focus-visible { outline: 2px solid #e2faff; outline-offset: 1px; }
 .album-screen {
   position: absolute;

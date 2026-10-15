@@ -2,17 +2,6 @@ import album from './swag-ii.json'
 import { activateAudioPulse } from './audio-pulse'
 
 export function initializePreviews(onTrackSelected?: (title: string) => void) {
-  document.querySelectorAll<HTMLButtonElement>('.player-hit').forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.remove('press-feedback')
-      // Restart feedback when the same button is pressed repeatedly.
-      void button.offsetWidth
-      button.classList.add('press-feedback')
-    })
-    button.addEventListener('animationend', event => {
-      if (event.animationName === 'button-glow') button.classList.remove('press-feedback')
-    })
-  })
   const audio = new Audio()
   audio.crossOrigin = 'anonymous'
   audio.preload = 'none'
