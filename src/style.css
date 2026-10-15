@@ -138,17 +138,6 @@ body { overflow-x: clip; }
   .player-hit.press-feedback::before { animation-duration: .15s; }
 }
 .player-hit:focus-visible { outline: 2px solid #e2faff; outline-offset: 1px; }
-.player-hit.is-playing::after {
-  content: 'Ⅱ';
-  position: absolute;
-  inset: 20%;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #b2d9e8;
-  color: #4a8eab;
-  font-size: clamp(15px, 3vw, 25px);
-}
 .album-screen {
   position: absolute;
   z-index: 3;
