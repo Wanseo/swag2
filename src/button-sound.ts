@@ -2,7 +2,7 @@
 export function createButtonSound() {
   const click = new Audio(`${import.meta.env.BASE_URL}audio/button-click.wav`)
   click.preload = 'auto'
-  click.volume = 0.25
+  click.volume = 0.6
   click.load()
   window.addEventListener('pagehide', () => click.pause())
   return () => {
