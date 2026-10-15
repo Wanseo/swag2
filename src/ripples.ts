@@ -63,6 +63,9 @@ export function sampleRipples(index: number, geometry: ReturnType<typeof createR
   let shift = 0
   const radius = geometry.radius[index]!
   for (const front of fronts) {
+    // Most pixels are outside the narrow front: skip their angular calculations.
+    const widest = front.width * 1.12
+    if (radius * 0.868 - front.radius > widest || radius * 1.132 - front.radius < -widest) continue
     const lean = geometry.sin1[index]! * front.cos3 + geometry.cos1[index]! * front.sin3
     const stretch = geometry.sin2[index]! * front.cos4 - geometry.cos2[index]! * front.sin4
     const fold = geometry.sin3[index]! * front.cos + geometry.cos3[index]! * front.sin

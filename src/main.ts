@@ -13,6 +13,7 @@ export function setMood(next: Mood) {
 }
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+const touchScreen = window.matchMedia('(pointer: coarse)')
 paused = reducedMotion.matches
 reducedMotion.addEventListener('change', event => { paused = event.matches })
 
@@ -20,8 +21,8 @@ function startAtmosphere() {
   // Layered domain warping makes colour boundaries stretch and curl like liquid.
   // The small render surface is softened by CSS; the grain stays on a separate layer.
   const canvas = document.querySelector<HTMLCanvasElement>('#atmosphere')!
-  canvas.width = 160
-  canvas.height = 108
+  canvas.width = touchScreen.matches ? 112 : 160
+  canvas.height = touchScreen.matches ? 76 : 108
   const ctx = canvas.getContext('2d', { alpha: false })!
   const frame = ctx.createImageData(canvas.width, canvas.height)
   const rgb = (hex: string) => [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16))
@@ -30,6 +31,8 @@ function startAtmosphere() {
   let lastDrawnMood: Mood | undefined
   const horizontalLight = new Float32Array(canvas.width)
   let geometry: ReturnType<typeof createRippleGeometry>
+  let distancesDirty = true
+  const invalidateDistances = () => { distancesDirty = true }
   function updateDistances() {
     const bounds = canvas.getBoundingClientRect()
     geometry = createRippleGeometry(canvas.width, canvas.height, bounds.width / bounds.height,
@@ -37,8 +40,8 @@ function startAtmosphere() {
       (window.innerHeight * 0.5 - bounds.top) / bounds.height)
   }
   updateDistances()
-  window.addEventListener('resize', updateDistances, { passive: true })
-  window.addEventListener('atmosphere-scroll', updateDistances)
+  window.addEventListener('resize', invalidateDistances, { passive: true })
+  window.addEventListener('atmosphere-scroll', invalidateDistances)
   let ripples: BassRipple[] = []
   let beatNumber = 0
   let time = 0
@@ -48,6 +51,10 @@ function startAtmosphere() {
     if (now - last < 1000 / 30 || document.hidden) return
     const delta = Math.min((now - last) / 1000, 0.1)
     last = now
+    if (distancesDirty) {
+      updateDistances()
+      distancesDirty = false
+    }
     const pulse = paused ? { energy: 0, beat: 0 } : readAudioPulse(now)
     if (paused) ripples = []
     ripples = ripples.filter(ripple => now - ripple.started < rippleDuration(ripple.strength))
@@ -116,6 +123,7 @@ initializePreviews(title => setMood(trackAtmospheres[title] ?? 'daydream'))
 let scrollFrame = 0
 function updateBackgroundScroll() {
   scrollFrame = 0
+  if (touchScreen.matches) return
   document.documentElement.style.setProperty('--background-scroll', `${-window.scrollY * 0.65}px`)
   window.dispatchEvent(new Event('atmosphere-scroll'))
 }

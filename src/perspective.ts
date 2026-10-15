@@ -1,5 +1,22 @@
 /** Trackpad pinch changes the viewpoint with a broad range and smooth settling. */
 export function initializePerspective() {
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    // Mobile gestures must never drive the desktop camera zoom.
+    for (const name of ['gesturestart', 'gesturechange', 'gestureend']) {
+      window.addEventListener(name, event => event.preventDefault(), { passive: false })
+    }
+    let lastBackgroundTap = -1000
+    window.addEventListener('touchend', event => {
+      if ((event.target as Element).closest('button, a, [role="listbox"]')) return
+      const now = performance.now()
+      if (now - lastBackgroundTap < 350) event.preventDefault()
+      lastBackgroundTap = now
+    }, { passive: false })
+    window.addEventListener('dblclick', event => {
+      if (!(event.target as Element).closest('button, a, [role="listbox"]')) event.preventDefault()
+    })
+    return
+  }
   let zoom = 1
   let targetZoom = 1
   let gestureStartZoom = 1
