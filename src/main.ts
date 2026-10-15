@@ -55,7 +55,8 @@ function startAtmosphere() {
       ripples.push({ started: now, strength: pulse.beat, seed: ++beatNumber })
     }
     const fronts = createRippleFronts(ripples, now, geometry.maxRadius)
-    if (!paused) time += delta * moods[mood].speed * 2.25
+    // Keep the underlying colour field almost still; accents move independently.
+    if (!paused) time += delta * moods[mood].speed * 0.08
     const target = palettes[mood]!
     const transitioning = colors.some((color, i) => color.some((channel, j) => Math.abs(channel - target[i]![j]!) > 0.1))
     if (paused && lastDrawnMood === mood && !transitioning) return
@@ -81,10 +82,7 @@ function startAtmosphere() {
         const curl = Math.sin(flowX * 4.6 + flowY * 3.2 - time * 0.6) * 0.8
         const i = y * canvas.width + x
         const rippleShift = sampleRipples(i, geometry, fronts)
-        const breathing = pulse.energy * (
-          Math.sin(flowX * 6 + flowY * 4 - time) * 0.16
-          + geometry.sin3[i]! * Math.sin(geometry.radius[i]! * 9 - time * 0.7) * 0.12)
-        const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75 + rippleShift + breathing) + 1) / 2
+        const wave = (Math.sin(flowY * 7 + flowX * 2.6 + curl + time * 0.75 + rippleShift) + 1) / 2
         const position = wave * 2.999
         const index = Math.floor(position)
         let blend = position - index
