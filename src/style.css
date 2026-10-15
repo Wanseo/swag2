@@ -21,7 +21,7 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
 @media(max-width:760px){.experience{padding:24px}.edition{display:none}.stage{min-height:560px;padding:50px 0 35px}h1{font-size:17px}footer{grid-template-columns:1fr 1fr;gap:28px 16px;padding-top:24px}.palette-control{text-align:right}.mood-options{gap:15px;justify-content:flex-end}.palette-control>.tiny-label{font-size:7px;letter-spacing:1px}.mood-info .tiny-label{font-size:8px;letter-spacing:1px}h2{font-size:29px}.mood-info p{max-width:145px;line-height:1.7}.connection{grid-column:1/-1;justify-self:center;margin:5px 0 0}.swatch{width:26px;height:26px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
-/* Anchor the body itself, independently of the asymmetric cable, at viewport centre. */
+/* Anchor the player at viewport centre. */
 :root { --player-width: min(580px, 84vw, 56svh); }
 /* Give the enlarged centrepiece a full first screen. */
 .stage { min-height: max(620px, calc(100svh - 64px)); }
@@ -42,56 +42,6 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   z-index: 1;
   filter: drop-shadow(5px 15px 15px rgb(28 55 57 / 15%));
 }
-.player-cable {
-  position: absolute;
-  z-index: 0;
-  width: 120%;
-  left: -5%;
-  top: -32%;
-  transform-origin: 0 50%;
-  transform: rotate(5deg);
-  /* Retain the upper earphones, hiding the loose lower-left loop and spare plug. */
-  mask-image: linear-gradient(to bottom, #000 50%, transparent 66%);
-  pointer-events: none;
-  opacity: .85;
-  filter: blur(1.2px) saturate(.9) drop-shadow(3px 5px 4px rgb(28 55 57 / 12%));
-}
-.player-cable img { width: 100%; }
-.player-plug {
-  position: absolute;
-  z-index: 0;
-  width: 60%;
-  left: 50%;
-  top: 97%;
-  transform-origin: 27.8% 68%;
-  transform: translate(-27.8%, -68%) rotate(-160deg) scaleX(-1);
-  /* Mirror the photographed loop toward the right; blend focus along the cable. */
-  mask-image:
-    linear-gradient(to bottom, transparent 48%, #000 58%),
-    linear-gradient(to right, #000 32%, transparent 85%);
-  mask-composite: intersect;
-  pointer-events: none;
-  opacity: 1;
-  filter: drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
-}
-.player-plug img { width: 100%; }
-.player-plug--soft {
-  mask-image:
-    linear-gradient(to bottom, transparent 48%, #000 58%),
-    linear-gradient(to right, transparent 32%, #000 85%);
-  filter: blur(1.6px) saturate(.9) drop-shadow(1px 3px 2px rgb(28 55 57 / 12%));
-}
-.player-cable::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--grain-texture) repeat;
-  background-size: 56px 56px;
-  opacity: .45;
-  mix-blend-mode: soft-light;
-  mask: url('./assets/pink-earphones.png') center / 100% 100% no-repeat;
-  -webkit-mask: url('./assets/pink-earphones.png') center / 100% 100% no-repeat;
-}
 .stage-caption {
   position: fixed;
   top: calc(50svh - var(--player-width) * .6 - 56px);
@@ -108,7 +58,6 @@ footer{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:end;gap:35px;b
   .stage-caption h1 { font-size: 14px; margin: 0; }
 }
 
-/* Keep the complete lower cable loop visible; only the viewport crops the scene. */
 body { overflow-x: clip; }
 /* Allow vertical scrolling while the logo and player stay fixed in the scene. */
 .experience { min-height: 160svh; }
